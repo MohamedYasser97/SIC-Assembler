@@ -4,7 +4,7 @@
 #include <fstream>
 #include <vector>
 #include <sstream>
-
+#include <map>
     int readFile(std::vector<std::vector<std::string>> &code){
 
         std::ifstream inFile("in.txt");
@@ -86,9 +86,12 @@
         }
         return;
 }
-
-    unsigned int locUpdate(){
-
-    }
+//    void createSymbolTable(std::vector<std::vector<std::string>> code, std::vector<int> location, std::map<std::string,int> &symbolTable,int lines){
+//        for(int i=1; i<lines-1 ; i++){
+//            if(code[i].size() == 3){
+//                symbolTable.insert((code[i][0]), location[i-1]);
+//            }
+//        }
+//    }
 
 #endif

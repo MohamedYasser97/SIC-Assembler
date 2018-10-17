@@ -11,8 +11,12 @@ int main(){
 
 std::vector<vector<string>> code(1000);
 std::vector<int> location;
+std::map<string,int> symbolTable;
+
     int lines = readFile(code);
     addressCounter(code,location,lines-1);
+ //   createSymbolTable(code,location,symbolTable,lines-1);
+
     for(int i=0 ; i<location.size(); i++)
         cout<<hex<<location[i]<<endl;
 
