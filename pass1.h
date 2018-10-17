@@ -5,7 +5,7 @@
 #include <vector>
 #include <sstream>
 
-    void readFile(std::vector<std::vector<std::string>> &code){
+    int readFile(std::vector<std::vector<std::string>> &code){
 
         std::ifstream inFile("in.txt");
         std::string temp;
@@ -30,10 +30,11 @@
             tempNoSpace.clear();
         }
 
-        return;
+        return i;
     }
 
-    int toDec(std::string str){
+
+    int hexToDec(std::string str){
 
         int address;
 
@@ -44,10 +45,47 @@
         return address;
     }
 
+    int stringToDec(std::string str){
+
+        int output;
+
+        std::stringstream stream;
+        stream << str;
+        stream >> output;
+
+        return output;
+    }
+
     int getStartAddress(std::vector<std::vector<std::string>> code){
 
-        return toDec(code[0][2]);
+        return hexToDec(code[0][2]);
     }
+
+    void addressCounter(std::vector<std::vector<std::string>> code, std::vector<int> &location, int lines){
+        location.push_back(getStartAddress(code));
+        int address=getStartAddress(code);
+        for(int i=1 ; i<lines ; i++){
+            if(code[i][1] == "RESW"){
+                address+=stringToDec(code[i][2]) * 3;
+            }else if(code[i][1] == "RESB"){
+                address+=stringToDec(code[i][2]);
+            }else if(code[i][1] == "WORD"){
+                address+=3;
+            }else if(code[i][1] == "BYTE"){
+                if(code[i][2][0]=='X' || code[i][2][0]=='x'){
+                    address += 1;
+                }
+                else if(code[i][2][0]=='C' || code[i][2][0]=='c'){
+                    address += hexToDec(code[i][2].substr(2,code[i][2].size()-3));
+                    }
+            }else{
+                address+=3;
+            }
+
+            location.push_back(address);
+        }
+        return;
+}
 
     unsigned int locUpdate(){
 
