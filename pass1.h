@@ -5,6 +5,8 @@
 #include <vector>
 #include <sstream>
 #include <map>
+#include <iostream>
+
     int readFile(std::vector<std::vector<std::string>> &code){
 
         std::ifstream inFile("in.txt");
@@ -86,12 +88,25 @@
         }
         return;
 }
-//    void createSymbolTable(std::vector<std::vector<std::string>> code, std::vector<int> location, std::map<std::string,int> &symbolTable,int lines){
-//        for(int i=1; i<lines-1 ; i++){
-//            if(code[i].size() == 3){
-//                symbolTable.insert((code[i][0]), location[i-1]);
-//            }
-//        }
-//    }
+    void createSymbolTable(std::vector<std::vector<std::string>> code, std::vector<int> location, std::map<std::string,int> &symbolTable,int lines){
+        for(int i=1; i<lines ; i++){
+            if(code[i].size() == 3 && code[i][2] != "X" && code[i][2] != "x"){
+                symbolTable.insert(std::pair<std::string,int>(code[i][0], location[i-1]));
+            }
+        }
+    }
+
+    void printSymbolTable(std::map<std::string,int> symbolTable){
+
+        freopen("symboltable.txt","w",stdout);
+
+        for( std::map<std::string,int>::const_iterator it = symbolTable.begin(); it != symbolTable.end(); ++it )
+        {
+          std::string key = it->first;
+          int value = it->second;
+          std::cout<<key<<"\t"<<std::hex<<value<<std::endl;
+
+        }
+    }
 
 #endif
