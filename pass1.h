@@ -6,6 +6,7 @@
 #include <sstream>
 #include <map>
 #include <iostream>
+#include <iomanip>
 
     int readFile(std::vector<std::vector<std::string>> &code){
 
@@ -98,15 +99,21 @@
 
     void printSymbolTable(std::map<std::string,int> symbolTable){
 
-        freopen("symboltable.txt","w",stdout);
+        std::ofstream file;
+
+        file.open("symboltable.txt");
 
         for( std::map<std::string,int>::const_iterator it = symbolTable.begin(); it != symbolTable.end(); ++it )
         {
           std::string key = it->first;
           int value = it->second;
-          std::cout<<key<<"\t"<<std::hex<<value<<std::endl;
+          file<<key<<"\t"<<std::hex<< std::setfill('0') << std::setw(4) << value<<std::endl;
 
         }
+
+        file.close();
+
+        return;
     }
 
 #endif
