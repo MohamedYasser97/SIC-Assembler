@@ -7,6 +7,7 @@
 #include <map>
 #include <iostream>
 #include <iomanip>
+#include <cmath>
 
     int readFile(std::vector<std::vector<std::string>> &code){
 
@@ -20,6 +21,7 @@
             for(int j=0;j<temp.size();j++){
 
                 if(temp[j] != ' ' && temp[j] != '\t' && temp[j] != '\n' && temp[j] != '\0'){
+
                     tempNoSpace+=temp[j];
 
                 }else{
@@ -64,6 +66,7 @@
         return hexToDec(code[0][2]);
     }
 
+    //REWRITE TO HANDLE X AND C
     void addressCounter(std::vector<std::vector<std::string>> code, std::vector<int> &location, int lines){
         location.push_back(getStartAddress(code));
         int address=getStartAddress(code);
@@ -76,11 +79,25 @@
                 address+=3;
             }else if(code[i][1] == "BYTE"){
                 if(code[i][2][0]=='X' || code[i][2][0]=='x'){
-                    address += 1;
+                    //address += ceil( (double)(code[i][2].substr(2,code[i][2].size()-3).size() ) / 2.0 );
+
+                    for(int j=0;j<(int)ceil( (double)(code[i][2].substr(2,code[i][2].size()-3).size() ) / 2.0 );j++){
+                        address+=1;
+                        location.push_back(address);
+                    }
+
+                    continue;
                 }
                 else if(code[i][2][0]=='C' || code[i][2][0]=='c'){
-                    address += hexToDec(code[i][2].substr(2,code[i][2].size()-3));
+                    //address += ceil( (double)(code[i][2].substr(2,code[i][2].size()-3).size() ) / 3.0 );
+
+                    for(int j=0;j<(int)ceil( (double)(code[i][2].substr(2,code[i][2].size()-3).size() ) / 3.0 );j++){
+                        address+=1;
+                        location.push_back(address);
                     }
+
+                    continue;
+                }
             }else{
                 address+=3;
             }
