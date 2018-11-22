@@ -66,7 +66,6 @@
         return hexToDec(code[0][2]);
     }
 
-    //REWRITE TO HANDLE X AND C
     void addressCounter(std::vector<std::vector<std::string>> code, std::vector<int> &location, int lines){
         location.push_back(getStartAddress(code));
         int address=getStartAddress(code);
@@ -91,7 +90,7 @@
                 else if(code[i][2][0]=='C' || code[i][2][0]=='c'){
                     //address += ceil( (double)(code[i][2].substr(2,code[i][2].size()-3).size() ) / 3.0 );
 
-                    for(int j=0;j<(int)ceil( (double)(code[i][2].substr(2,code[i][2].size()-3).size() ) / 3.0 );j++){
+                    for(int j=0;j<code[i][2].substr(2,code[i][2].size()-3).size();j++){
                         address+=1;
                         location.push_back(address);
                     }
@@ -107,10 +106,29 @@
         return;
 }
     void createSymbolTable(std::vector<std::vector<std::string>> code, std::vector<int> location, std::map<std::string,int> &symbolTable,int lines){
+
+        int j=0;
+
         for(int i=1; i<lines ; i++){
+
             if(code[i].size() == 3 && code[i][2] != "X" && code[i][2] != "x"){
-                symbolTable.insert(std::pair<std::string,int>(code[i][0], location[i-1]));
+
+                symbolTable.insert(std::pair<std::string,int>(code[i][0], location[j]));
+
+                if(code[i][2][0]=='X' || code[i][2][0]=='x'){
+
+
+                    j+=(int)ceil( (double)(code[i][2].substr(2,code[i][2].size()-3).size() ) / 2.0) -1;
+
+                }else if(code[i][2][0]=='C' || code[i][2][0]=='c'){
+
+                    j+=code[i][2].substr(2,code[i][2].size()-3).size() -1;
+                }
+
+                //symbolTable.insert(std::pair<std::string,int>(code[i][0], location[j]));
             }
+
+            j++;
         }
     }
 
